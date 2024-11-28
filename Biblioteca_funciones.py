@@ -166,16 +166,16 @@ def cargar_fondo_y_musica_segun_nivel(pantalla:pygame.Surface, nivel:str) -> pyg
         pygame.Surface: superficie en donde va a estar la pantalla.
     """
     if nivel == "Facil":
-        fondo = pygame.image.load("Segundo_parcial/pantalla_nivel_facil.png")
-        pygame.mixer.music.load("Segundo_parcial/musica_nivel_facil.mp3") #sonido largo de fondo
+        fondo = pygame.image.load("pantalla_nivel_facil.png")
+        pygame.mixer.music.load("musica_nivel_facil.mp3") #sonido largo de fondo
 
     elif nivel == "Medio": 
-        fondo = pygame.image.load("Segundo_parcial/pantalla_nivel_medio.png")
-        pygame.mixer.music.load("Segundo_parcial/musica_nivel_medio.mp3")
+        fondo = pygame.image.load("pantalla_nivel_medio.png")
+        pygame.mixer.music.load("musica_nivel_medio.mp3")
 
     elif nivel == "Dificil":
-        fondo = pygame.image.load("Segundo_parcial/pantalla_nivel_dificil.png")
-        pygame.mixer.music.load("Segundo_parcial/musica_nivel_dificil.mp3")
+        fondo = pygame.image.load("pantalla_nivel_dificil.png")
+        pygame.mixer.music.load("musica_nivel_dificil.mp3")
 
     fondo = pygame.transform.scale(fondo, pantalla.get_size())
     pantalla.blit(fondo, (0, 0))
@@ -286,3 +286,22 @@ def asignar_colores_sudoku_segun_nivel(nivel:str) -> dict:
         }
     return colores
 
+def iniciar_contador(contador_inicio:int, fuente:str, posicion:int,color_texto) -> None:
+    """
+    Calcula el tiempo transcurrido desde el inicio del contador y genera el texto del countdown.
+
+        contador_inicio (int): Tiempo de inicio del contador en milisegundos.
+        fuente (pygame.font.Font): Fuente a usar para renderizar el texto.
+        posicion: Posición (x, y)
+        color_texto: Color del texto en formato RGB.
+    """
+    tiempo_transcurrido = (pygame.time.get_ticks() - contador_inicio) / 1000
+    horas = int(tiempo_transcurrido // 3600)
+    minutos = int((tiempo_transcurrido % 3600) // 60)
+    segundos = int(tiempo_transcurrido % 60)
+
+    tiempo_texto = f"{horas:02d}:{minutos:02d}:{segundos:02d}"
+    texto = fuente.render(tiempo_texto, True, color_texto)
+    rect = texto.get_rect(center=posicion)
+
+    return texto, rect

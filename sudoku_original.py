@@ -1,17 +1,5 @@
 import random
-lista = []
-
-def mostrar_lista(lista:list) -> None:
-    """
-    """
-    for i in range(len(lista)):
-        if len(lista) != i+1:
-            print(lista[i], end=" - ")
-
-        else:
-            print(lista[i])
-
-import random
+import copy
 
 def mostrar_matriz(matriz:list) -> None:
     """
@@ -40,23 +28,18 @@ def inicializar_matriz(filas:int, columnas:int, valor_inicial:any) -> list:
 
     return matriz
 
-def carga_secuencial(matriz:list) -> None:
+def ocultar_datos_copia(matriz:list, caracter:any, cantidad:int) -> None:
     """
     """
-    for i in range(len(matriz)):
-        for j in range(len(matriz[i])):
-            matriz[i][j] = random.randint(1, 9)
-
-
-def ocultar_datos(matriz:list, caracter:any, cantidad:int) -> None:
-    """
-    """
+    # matriz_copia = matriz.copy()
+    matriz_copia = copy.deepcopy(matriz)
+    
     for _ in range(cantidad):
         fila = random.randint(0, 8)
         columna = random.randint(0, 8)
-        matriz[fila][columna] = caracter
+        matriz_copia[fila][columna] = caracter
 
-import random
+    return matriz_copia
 
 def verificar_numero(lista:list, numero:int) -> bool:
     """
@@ -158,6 +141,64 @@ def verificar_numero_subcuadricula(matriz: list, numero: int, fila: int, columna
 
     return repetido
 
+def comprobar_matriz(matriz:list, caracter) -> bool:
+    """
+    """
+    completado = True
+    for i in range(len(matriz)):
+        for j in range(len(matriz[i])):
+            if matriz[i][j] == caracter:
+                completado = False
+                break
+
+        if completado == False:
+            break
+
+    return completado
+
+def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
+    """
+    """
+    salir = False
+    while True:
+        # Mostrar la matriz al usuario
+        print("\nMatriz actual:")
+
+        for i in range(len(matriz_copia)):
+            for j in range(len(matriz_copia[i])):
+                if matriz_copia[i][j] == "-":
+                    mostrar_matriz(matriz_copia)
+                    numero_ingresar = int(input("\nIngrese un número (1-9, o -1 para salir, 0 para saltar): "))
+
+                    if numero_ingresar == -1:  # Salida del juego
+                        print("Gracias por jugar. ¡Hasta luego!")
+                        salir = True
+                        break
+
+                    elif numero_ingresar == 0:
+                        continue
+
+                    else:
+                        while numero_ingresar != matriz_original[i][j]:
+                            numero_ingresar = int(input("ERROR, número incorrecto. Ingrese nuevamente: "))
+
+                        print(f"Número {numero_ingresar} correcto")
+                        matriz_copia[i][j] = numero_ingresar
+
+                else:
+                    if comprobar_matriz(matriz_copia, caracter) == True:
+                        salir = True
+                        print("¡Ha completado el juego!")
+                        break
+
+            if salir == True:
+                break
+
+        if salir == True:
+            break    
+        # Pedir al usuario que ingrese una posición
+                
+
 
 print("Inicializando matriz")
 matriz = inicializar_matriz(9, 9, 0)
@@ -173,3 +214,17 @@ print("Resolviendo sudoku")
 resolver_sudoku(matriz)
 mostrar_matriz(matriz)
 print("Sudoku resuelto")
+
+print()
+print()
+print()
+
+print("Matriz copiada:")
+matriz_copia = ocultar_datos_copia(matriz, "-", 1)
+mostrar_matriz(matriz_copia)
+
+print()
+print()
+print()
+
+jugar_sudoku(matriz, matriz_copia, "-")

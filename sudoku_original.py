@@ -237,6 +237,7 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
                 
 
 
+print()
 print("Inicializando matriz")
 matriz = inicializar_matriz(9, 9, 0)
 print("Matriz inicializada")

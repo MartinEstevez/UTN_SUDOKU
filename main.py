@@ -16,9 +16,6 @@ ultimo_etado_del_mouse = None #botones titilando
 contador_inicio = pygame.time.get_ticks()  # Tiempo inicial para el contador
 fuente = pygame.font.SysFont("Arial", 30)  # Fuente para el contador
 
-#posicion_tablero = (400, 100)  # Posición (x, y) del tablero en la pantalla
-#tamanio_tablero = (540, 540)  # Tamaño del tablero (ancho, alto)
-
 colores_nivel_actual = {
     "fondo": (0, 0, 0),  # Negro
     "celdas": (255, 255, 255),  # Blanco
@@ -125,6 +122,7 @@ while corriendo == True:
                 x, y = pygame.mouse.get_pos()
                 pantalla_actual = "Inicio"
                 actualizar_pantalla = True
+                
     
     # pantalla.fill((60,15,0)) #color de fondo 
 

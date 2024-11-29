@@ -63,7 +63,3 @@ def mostrar_pantalla_puntajes_jugadores(pantalla:pygame.Surface, ruta_imagen:str
 
 
 
-
-
-
-

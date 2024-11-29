@@ -305,3 +305,50 @@ def iniciar_contador(contador_inicio:int, fuente:str, posicion:int,color_texto) 
     rect = texto.get_rect(center=posicion)
 
     return texto, rect
+
+def mostrar_pantalla_puntaje(pantalla:pygame.Surface, ruta_imagen:str) -> None:
+    
+    """
+    Función para mostrar la pantalla de puntaje.
+
+    """
+
+    imagen_puntajes = pygame.image.load(ruta_imagen)
+    imagen_puntajes = pygame.transform.scale(imagen_puntajes, pantalla.get_size())
+    pantalla.blit(imagen_puntajes, (0, 0))
+    
+    fuente_texto_menu = pygame.font.SysFont("Arial", 30)
+    fuente_texto_puntaje = pygame.font.SysFont("Arial", 25)
+
+    texto_menu = fuente_texto_menu.render("MENU", True, "#000000")
+    boton_menu = texto_menu.get_rect(center=(400, 500))
+    borde_boton = pygame.Rect.inflate(boton_menu, 10, 10)
+    pygame.draw.rect(pantalla, "#000000", borde_boton, 3)
+
+    texto_tiempo = fuente_texto_puntaje.render(f"TIEMPO: ", True, (0, 0, 0))
+    texto_errores = fuente_texto_puntaje.render(f"ERRORES: ", True, (0, 0, 0))
+    texto_dificultad = fuente_texto_puntaje.render(f"DIFICULTAD: ", True, (0, 0, 0))
+    texto_puntaje = fuente_texto_puntaje.render(f"PUNTAJE OBTENIDO: ", True, (0, 0, 0))
+
+    pantalla.blit(texto_menu, boton_menu)
+    pantalla.blit(texto_tiempo,)
+    pantalla.blit(texto_errores)
+    pantalla.blit(texto_dificultad)
+    pantalla.blit(texto_puntaje)
+
+    pygame.display.update()
+
+def mostrar_boton_menu(pantalla:pygame.Surface) -> None:
+
+    x_menu = 1400
+    y_menu = 700
+
+    fuente_30 = pygame.font.SysFont("Arial", 40)
+    texto_menu = fuente_30.render("MENU", True, "#000000")
+    boton_menu = texto_menu.get_rect(center=(x_menu, y_menu))
+    menu = pygame.Rect.inflate(boton_menu, 10, 10)
+    pygame.draw.rect(pantalla, "#000000", menu, 3)
+
+    pantalla.blit(texto_menu, boton_menu)
+
+    return menu

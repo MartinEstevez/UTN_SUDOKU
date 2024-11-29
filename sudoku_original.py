@@ -38,13 +38,13 @@ def ocultar_datos_copia(matriz:list, caracter:any, criterio:str) -> None:
     ocultos = None
     posiciones = []
 
-    if criterio.lower() == "facil":
+    if criterio.lower() == "facil" or criterio.lower() == "1":
         porcentaje = 20
 
-    elif criterio.lower() == "intermedio":
+    elif criterio.lower() == "intermedio" or criterio.lower() == "2":
         porcentaje = 40
 
-    elif criterio.lower() == "dificil":
+    elif criterio.lower() == "dificil" or criterio.lower() == "3":
         porcentaje = 60
 
     else:
@@ -208,6 +208,7 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
                         continue
 
                     else:
+                        # while numero_ingresar != matriz_original:
                         if numero_ingresar == matriz_original[i][j]:
                             print(f"Número {numero_ingresar} correcto")
                             matriz_copia[i][j] = numero_ingresar
@@ -237,7 +238,6 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
                 
 
 
-print()
 print("Inicializando matriz")
 matriz = inicializar_matriz(9, 9, 0)
 print("Matriz inicializada")

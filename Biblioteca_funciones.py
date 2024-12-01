@@ -168,16 +168,16 @@ def cargar_fondo_y_musica_segun_nivel(pantalla:pygame.Surface, nivel:str) -> pyg
     """
     pygame.mixer.music.stop() 
     if nivel == "Facil":
-        fondo = pygame.image.load("Segundo_parcial/pantalla_nivel_facil.png")
-        pygame.mixer.music.load("Segundo_parcial/musica_nivel_facil.mp3") #sonido largo de fondo
+        fondo = pygame.image.load("pantalla_nivel_facil.png")
+        pygame.mixer.music.load("musica_nivel_facil.mp3") #sonido largo de fondo
 
     elif nivel == "Medio": 
-        fondo = pygame.image.load("Segundo_parcial/pantalla_nivel_medio.png")
-        pygame.mixer.music.load("Segundo_parcial/musica_nivel_medio.mp3")
+        fondo = pygame.image.load("pantalla_nivel_medio.png")
+        pygame.mixer.music.load("musica_nivel_medio.mp3")
 
     elif nivel == "Dificil":
-        fondo = pygame.image.load("Segundo_parcial/pantalla_nivel_dificil.png")
-        pygame.mixer.music.load("Segundo_parcial/musica_nivel_dificil.mp3")
+        fondo = pygame.image.load("pantalla_nivel_dificil.png")
+        pygame.mixer.music.load("musica_nivel_dificil.mp3")
 
         #FIJATE ESTO
 

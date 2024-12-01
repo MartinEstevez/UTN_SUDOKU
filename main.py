@@ -1,5 +1,6 @@
 import pygame
 from Biblioteca_funciones import *
+from puntajes import *
 
 pygame.init() #inicializo pygame 
 pygame.mixer.init() #inicializo musica

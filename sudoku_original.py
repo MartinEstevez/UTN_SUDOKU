@@ -263,5 +263,6 @@ print()
 dificultad = input("[1] Fácil\n[2] Intermedio\n[3] Difícil\nIngrese la dificultad en la que desea jugar: ")
 matriz_copia = ocultar_datos_copia(matriz, " ", dificultad)
 print()
+print()
 
 jugar_sudoku(matriz, matriz_copia, " ")

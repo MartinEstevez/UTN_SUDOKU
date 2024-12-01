@@ -121,6 +121,7 @@ def mostrar_pantalla_niveles(pantalla:pygame.Surface, ruta_imagen:str) -> None:
     dibujar_boton(pantalla, posicion_horizontal_boton, posicion_vertical_incial_boton, ancho_del_boton, alto_del_boton, "Facil", (56, 92, 106), (128, 164, 238))
     dibujar_boton(pantalla, posicion_horizontal_boton + ancho_del_boton + espacios_entre_los_botones, posicion_vertical_incial_boton, ancho_del_boton, alto_del_boton, "Medio", (56, 92, 106), (128, 164, 238))
     dibujar_boton(pantalla, posicion_horizontal_boton + 2*(ancho_del_boton + espacios_entre_los_botones), posicion_vertical_incial_boton , ancho_del_boton, alto_del_boton, "Dificil", (56, 92, 106), (128, 164, 238))
+    pygame.display.flip() #TITILEOOO
 
 def obtener_accion_niveles(x:int, y:int) -> str:
     """
@@ -165,6 +166,7 @@ def cargar_fondo_y_musica_segun_nivel(pantalla:pygame.Surface, nivel:str) -> pyg
     Retorna:
         pygame.Surface: superficie en donde va a estar la pantalla.
     """
+    pygame.mixer.music.stop() 
     if nivel == "Facil":
         fondo = pygame.image.load("pantalla_nivel_facil.png")
         pygame.mixer.music.load("musica_nivel_facil.mp3") #sonido largo de fondo
@@ -177,8 +179,12 @@ def cargar_fondo_y_musica_segun_nivel(pantalla:pygame.Surface, nivel:str) -> pyg
         fondo = pygame.image.load("pantalla_nivel_dificil.png")
         pygame.mixer.music.load("musica_nivel_dificil.mp3")
 
+        #FIJATE ESTO
+
+    #ajuste de fondo al tamaño de la pantalla
     fondo = pygame.transform.scale(fondo, pantalla.get_size())
     pantalla.blit(fondo, (0, 0))
+
     pygame.mixer.music.set_volume(0.4) #volumen de pantalla
     pygame.mixer.music.play(-1) #se repite la cancion
 
@@ -286,69 +292,23 @@ def asignar_colores_sudoku_segun_nivel(nivel:str) -> dict:
         }
     return colores
 
-def iniciar_contador(contador_inicio:int, fuente:str, posicion:int,color_texto) -> None:
+def obtener_accion_boton_volver(coordenada_x:int, coordenada_y:int) -> str:
     """
-    Calcula el tiempo transcurrido desde el inicio del contador y genera el texto del countdown.
+    Esta función detecta si se hizo click en el botón volver.
 
-        contador_inicio (int): Tiempo de inicio del contador en milisegundos.
-        fuente (pygame.font.Font): Fuente a usar para renderizar el texto.
-        posicion: Posición (x, y)
-        color_texto: Color del texto en formato RGB.
+    Args:
+        x (int): _description_
+        y (int): _description_
+
+    Returns:
+        str: _description_
     """
-    tiempo_transcurrido = (pygame.time.get_ticks() - contador_inicio) / 1000
-    horas = int(tiempo_transcurrido // 3600)
-    minutos = int((tiempo_transcurrido % 3600) // 60)
-    segundos = int(tiempo_transcurrido % 60)
+    accion = None
+    boton_x = 950
+    boton_y = 570
+    alto_boton = 400
+    ancho_boton = 150
 
-    tiempo_texto = f"{horas:02d}:{minutos:02d}:{segundos:02d}"
-    texto = fuente.render(tiempo_texto, True, color_texto)
-    rect = texto.get_rect(center=posicion)
-
-    return texto, rect
-
-def mostrar_pantalla_puntaje(pantalla:pygame.Surface, ruta_imagen:str) -> None:
-    
-    """
-    Función para mostrar la pantalla de puntaje.
-
-    """
-
-    imagen_puntajes = pygame.image.load(ruta_imagen)
-    imagen_puntajes = pygame.transform.scale(imagen_puntajes, pantalla.get_size())
-    pantalla.blit(imagen_puntajes, (0, 0))
-    
-    fuente_texto_menu = pygame.font.SysFont("Arial", 30)
-    fuente_texto_puntaje = pygame.font.SysFont("Arial", 25)
-
-    texto_menu = fuente_texto_menu.render("MENU", True, "#000000")
-    boton_menu = texto_menu.get_rect(center=(400, 500))
-    borde_boton = pygame.Rect.inflate(boton_menu, 10, 10)
-    pygame.draw.rect(pantalla, "#000000", borde_boton, 3)
-
-    texto_tiempo = fuente_texto_puntaje.render(f"TIEMPO: ", True, (0, 0, 0))
-    texto_errores = fuente_texto_puntaje.render(f"ERRORES: ", True, (0, 0, 0))
-    texto_dificultad = fuente_texto_puntaje.render(f"DIFICULTAD: ", True, (0, 0, 0))
-    texto_puntaje = fuente_texto_puntaje.render(f"PUNTAJE OBTENIDO: ", True, (0, 0, 0))
-
-    pantalla.blit(texto_menu, boton_menu)
-    pantalla.blit(texto_tiempo,)
-    pantalla.blit(texto_errores)
-    pantalla.blit(texto_dificultad)
-    pantalla.blit(texto_puntaje)
-
-    pygame.display.update()
-
-def mostrar_boton_menu(pantalla:pygame.Surface) -> None:
-
-    x_menu = 1400
-    y_menu = 700
-
-    fuente_30 = pygame.font.SysFont("Arial", 40)
-    texto_menu = fuente_30.render("MENU", True, "#000000")
-    boton_menu = texto_menu.get_rect(center=(x_menu, y_menu))
-    menu = pygame.Rect.inflate(boton_menu, 10, 10)
-    pygame.draw.rect(pantalla, "#000000", menu, 3)
-
-    pantalla.blit(texto_menu, boton_menu)
-
-    return menu
+    if boton_x <= coordenada_x <= boton_x + ancho_boton and boton_y <= coordenada_y <= boton_y + alto_boton:
+        accion = "Volver"
+    return accion 

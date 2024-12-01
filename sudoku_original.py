@@ -1,6 +1,5 @@
 import random
 import copy
-from Biblioteca_funciones import *
 
 def mostrar_matriz(matriz:list) -> None:
     """
@@ -47,7 +46,7 @@ def ocultar_datos_copia(matriz:list, caracter:any, criterio:str) -> None:
 
     elif criterio.lower() == "dificil" or criterio.lower() == "3":
         porcentaje = 60
-
+    
     else:
         print("Acción inválida")
 
@@ -242,27 +241,29 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
         if salir == True:
             break    
         # Pedir al usuario que ingrese una posición
+
                 
-print("Inicializando matriz")
-matriz = inicializar_matriz(9, 9, 0)
-print("Matriz inicializada")
+# print("Inicializando matriz")
+#matriz = inicializar_matriz(9, 9, 0)
 
-print()
-print()
-print()
+# print("Matriz inicializada")
 
-print("Resolviendo sudoku")
-resolver_sudoku(matriz)
-mostrar_matriz(matriz)
-print("Sudoku resuelto")
+# print()
+# print()
+# print()
 
-print()
-print()
-print()
+# print("Resolviendo sudoku")
+#resolver_sudoku(matriz)
+#mostrar_matriz(matriz)
+# print("Sudoku resuelto")
 
-dificultad = input("[1] Fácil\n[2] Intermedio\n[3] Difícil\nIngrese la dificultad en la que desea jugar: ")
-matriz_copia = ocultar_datos_copia(matriz, " ", dificultad)
-print()
-print()
+# print()
+# print()
+# print()
 
-jugar_sudoku(matriz, matriz_copia, " ")
+#dificultad = "1"
+#dificultad = input("[1] Fácil\n[2] Intermedio\n[3] Difícil\nIngrese la dificultad en la que desea jugar: ")
+#matriz_copia = ocultar_datos_copia(matriz, " ", dificultad)
+# print()
+# print()
+#jugar_sudoku(matriz, matriz_copia, " ")

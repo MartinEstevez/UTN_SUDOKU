@@ -121,6 +121,7 @@ def mostrar_pantalla_niveles(pantalla:pygame.Surface, ruta_imagen:str) -> None:
     dibujar_boton(pantalla, posicion_horizontal_boton, posicion_vertical_incial_boton, ancho_del_boton, alto_del_boton, "Facil", (56, 92, 106), (128, 164, 238))
     dibujar_boton(pantalla, posicion_horizontal_boton + ancho_del_boton + espacios_entre_los_botones, posicion_vertical_incial_boton, ancho_del_boton, alto_del_boton, "Medio", (56, 92, 106), (128, 164, 238))
     dibujar_boton(pantalla, posicion_horizontal_boton + 2*(ancho_del_boton + espacios_entre_los_botones), posicion_vertical_incial_boton , ancho_del_boton, alto_del_boton, "Dificil", (56, 92, 106), (128, 164, 238))
+    pygame.display.flip() #TITILEOOO
 
 def obtener_accion_niveles(x:int, y:int) -> str:
     """
@@ -165,6 +166,7 @@ def cargar_fondo_y_musica_segun_nivel(pantalla:pygame.Surface, nivel:str) -> pyg
     Retorna:
         pygame.Surface: superficie en donde va a estar la pantalla.
     """
+    pygame.mixer.music.stop() 
     if nivel == "Facil":
         fondo = pygame.image.load("Segundo_parcial/pantalla_nivel_facil.png")
         pygame.mixer.music.load("Segundo_parcial/musica_nivel_facil.mp3") #sonido largo de fondo
@@ -177,8 +179,12 @@ def cargar_fondo_y_musica_segun_nivel(pantalla:pygame.Surface, nivel:str) -> pyg
         fondo = pygame.image.load("Segundo_parcial/pantalla_nivel_dificil.png")
         pygame.mixer.music.load("Segundo_parcial/musica_nivel_dificil.mp3")
 
+        #FIJATE ESTO
+
+    #ajuste de fondo al tamaño de la pantalla
     fondo = pygame.transform.scale(fondo, pantalla.get_size())
     pantalla.blit(fondo, (0, 0))
+
     pygame.mixer.music.set_volume(0.4) #volumen de pantalla
     pygame.mixer.music.play(-1) #se repite la cancion
 
@@ -286,3 +292,23 @@ def asignar_colores_sudoku_segun_nivel(nivel:str) -> dict:
         }
     return colores
 
+def obtener_accion_boton_volver(coordenada_x:int, coordenada_y:int) -> str:
+    """
+    Esta función detecta si se hizo click en el botón volver.
+
+    Args:
+        x (int): _description_
+        y (int): _description_
+
+    Returns:
+        str: _description_
+    """
+    accion = None
+    boton_x = 950
+    boton_y = 570
+    alto_boton = 400
+    ancho_boton = 150
+
+    if boton_x <= coordenada_x <= boton_x + ancho_boton and boton_y <= coordenada_y <= boton_y + alto_boton:
+        accion = "Volver"
+    return accion 

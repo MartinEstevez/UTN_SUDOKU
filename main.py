@@ -88,7 +88,8 @@ while corriendo == True:
     elif pantalla_actual in ["Facil", "Medio", "Dificil"]:
         pantalla.fill((255,255,255))
         cargar_fondo_y_musica_segun_nivel(pantalla, pantalla_actual)
-        dibujar_boton(pantalla, 950, 570, 400, 150, "Volver", (255,255,255), (188, 211, 242))
+        mostrar_boton_menu(pantalla)
+        # dibujar_boton(pantalla, 950, 570, 400, 150, "Volver", (255,255,255), (188, 211, 242))
         texto, rect = iniciar_contador(contador_inicio, fuente, (1400, 50), (0, 0, 0))
         pantalla.blit(texto, rect)
         mostrar_tablero(pantalla)
@@ -96,17 +97,21 @@ while corriendo == True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 corriendo = False
+
+
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
-                accion = obtener_accion_boton_volver(x, y)
-                if accion == "Volver":
-                    pantalla_actual = "Inicio"
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("musica_inicio.mp3") #sonido largo de fondo
-                    pygame.mixer.music.set_volume(0.4)
-                    pygame.mixer.music.play(loops=-1, start=0.0)
-
-        
+                pantalla_actual = "Inicio"
+                actualizar_pantalla = True
+            # elif evento.type == pygame.MOUSEBUTTONDOWN:
+            #     x, y = pygame.mouse.get_pos()
+            #     accion = obtener_accion_boton_volver(x, y)
+            #     if accion == "Volver":
+            #         pantalla_actual = "Inicio"
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load("musica_inicio.mp3") #sonido largo de fondo
+                pygame.mixer.music.set_volume(0.4)
+                pygame.mixer.music.play(loops=-1, start=0.0)
 
         pygame.display.flip()
 

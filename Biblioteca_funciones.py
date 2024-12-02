@@ -327,7 +327,7 @@ def mostrar_pantalla_puntaje(pantalla:pygame.Surface, ruta_imagen:str) -> None:
     fuente_texto_menu = pygame.font.SysFont("Arial", 30)
     fuente_texto_puntaje = pygame.font.SysFont("Arial", 25)
 
-    texto_menu = fuente_texto_menu.render("MENU", True, "#000000")
+    texto_menu = fuente_texto_menu.render("VOLVER", True, "#000000")
     boton_menu = texto_menu.get_rect(center=(400, 500))
     borde_boton = pygame.Rect.inflate(boton_menu, 10, 10)
     pygame.draw.rect(pantalla, "#000000", borde_boton, 5)
@@ -453,16 +453,19 @@ def mostrar_numeros_dentro_sudoku(pantalla:pygame.Surface, matriz_copia:list) ->
         pantalla (pygame.Surface): superficie en donde se van a poner esos números.
         tablero (list): lista de números.
     """
-    tamanio_celda = 85
+    tamanio_celda = 87
     fuente_numeros = pygame.font.SysFont("Arial", 32) #tamaño fuente
 
     for i in range(9):
         for j in range(9):
+            
             if matriz_copia[i][j] != 0:  # Si la celda no está vacía.
-                x = j * tamanio_celda + tamanio_celda // 4
-                y = i * tamanio_celda + tamanio_celda // 4
+                x = j * tamanio_celda + tamanio_celda // 2
+                y = i * tamanio_celda + tamanio_celda // 2
                 texto = fuente_numeros.render(str(matriz_copia[i][j]), True, (0, 0, 0))  # Crear texto.
-                pantalla.blit(texto, (x, y))  # Dibujar texto en la superficie.   
+                rect_celda = pygame.Rect(j * tamanio_celda, i * tamanio_celda, tamanio_celda, tamanio_celda)  # Crear rectángulo de la celda
+                texto_rect = texto.get_rect(center=rect_celda.center)  # Centrar el texto en la celda
+                pantalla.blit(texto, texto_rect)  # Dibujar texto en la superficie.  
 
     # for i in range(9):
     #     for j in range(9): 

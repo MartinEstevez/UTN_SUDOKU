@@ -1,4 +1,5 @@
-import pygame 
+import pygame
+from sudoku_original import *
 
 #CARACTERISTICAS PANTALLA
 def inicializar_caracteristicas_pantalla(ancho:int, largo:int, titulo_juego:str, ruta_icono:str) -> pygame.Surface: #que devuelve? surface?
@@ -292,6 +293,58 @@ def asignar_colores_sudoku_segun_nivel(nivel:str) -> dict:
         }
     return colores
 
+def iniciar_contador(contador_inicio:int, fuente:str, posicion:int,color_texto) -> None:
+    """
+    Calcula el tiempo transcurrido desde el inicio del contador y genera el texto del countdown.
+
+        contador_inicio (int): Tiempo de inicio del contador en milisegundos.
+        fuente (pygame.font.Font): Fuente a usar para renderizar el texto.
+        posicion: Posición (x, y)
+        color_texto: Color del texto en formato RGB.
+    """
+    tiempo_transcurrido = (pygame.time.get_ticks() - contador_inicio) / 1000
+    horas = int(tiempo_transcurrido // 3600)
+    minutos = int((tiempo_transcurrido % 3600) // 60)
+    segundos = int(tiempo_transcurrido % 60)
+
+    tiempo_texto = f"{horas:02d}:{minutos:02d}:{segundos:02d}"
+    texto = fuente.render(tiempo_texto, True, color_texto)
+    rect = texto.get_rect(center=posicion)
+
+    return texto, rect
+
+def mostrar_pantalla_puntaje(pantalla:pygame.Surface, ruta_imagen:str) -> None:
+    
+    """
+    Función para mostrar la pantalla de puntaje.
+
+    """
+
+    imagen_puntajes = pygame.image.load(ruta_imagen) #busca la ruta de la imagen para el fondo
+    imagen_puntajes = pygame.transform.scale(imagen_puntajes, pantalla.get_size())
+    pantalla.blit(imagen_puntajes, (0, 0))
+    
+    fuente_texto_menu = pygame.font.SysFont("Arial", 30)
+    fuente_texto_puntaje = pygame.font.SysFont("Arial", 25)
+
+    texto_menu = fuente_texto_menu.render("VOLVER", True, "#000000")
+    boton_menu = texto_menu.get_rect(center=(400, 500))
+    borde_boton = pygame.Rect.inflate(boton_menu, 10, 10)
+    pygame.draw.rect(pantalla, "#000000", borde_boton, 5)
+
+    texto_tiempo = fuente_texto_puntaje.render(f"TIEMPO: ", True, (0, 0, 0))
+    texto_errores = fuente_texto_puntaje.render(f"ERRORES: ", True, (0, 0, 0))
+    texto_dificultad = fuente_texto_puntaje.render(f"DIFICULTAD: ", True, (0, 0, 0))
+    texto_puntaje = fuente_texto_puntaje.render(f"PUNTAJE OBTENIDO: ", True, (0, 0, 0))
+
+    pantalla.blit(texto_menu, boton_menu)
+    pantalla.blit(texto_tiempo)
+    pantalla.blit(texto_errores)
+    pantalla.blit(texto_dificultad)
+    pantalla.blit(texto_puntaje)
+
+    pygame.display.update()
+
 def obtener_accion_boton_volver(coordenada_x:int, coordenada_y:int) -> str:
     """
     Esta función detecta si se hizo click en el botón volver.
@@ -312,3 +365,112 @@ def obtener_accion_boton_volver(coordenada_x:int, coordenada_y:int) -> str:
     if boton_x <= coordenada_x <= boton_x + ancho_boton and boton_y <= coordenada_y <= boton_y + alto_boton:
         accion = "Volver"
     return accion 
+
+def mostrar_boton_menu(pantalla:pygame.Surface) -> None: 
+
+    """ 
+    Esta funcion dibuja un boton de menu en pantalla para poder volver al menu principal.
+
+    Retorna: El area del boton
+
+    """
+
+    x_menu = 1400
+    y_menu = 700
+
+    fuente_30 = pygame.font.SysFont("Arial", 40)
+    texto_menu = fuente_30.render("MENU", True, "#000000")
+    boton_menu = texto_menu.get_rect(center=(x_menu, y_menu))
+    menu = pygame.Rect.inflate(boton_menu, 10, 10)
+    pygame.draw.rect(pantalla, "#000000", menu, 3)
+
+    pantalla.blit(texto_menu, boton_menu)
+
+    return menu
+
+def iniciar_contador(contador_inicio:int, fuente:str, posicion:int,color_texto) -> None:
+    """
+    Calcula el tiempo transcurrido desde el inicio del contador y genera el texto del countdown.
+
+        contador_inicio (int): Tiempo de inicio del contador en milisegundos.
+        fuente (pygame.font.Font): Fuente a usar para renderizar el texto.
+        posicion: Posición (x, y)
+        color_texto: Color del texto en formato RGB.
+    """
+    tiempo_transcurrido = (pygame.time.get_ticks() - contador_inicio) / 1000
+    horas = int(tiempo_transcurrido // 3600)
+    minutos = int((tiempo_transcurrido % 3600) // 60)
+    segundos = int(tiempo_transcurrido % 60)
+
+    tiempo_texto = f"{horas:02d}:{minutos:02d}:{segundos:02d}"
+    texto = fuente.render(tiempo_texto, True, color_texto)
+    rect = texto.get_rect(center=posicion)
+
+    return texto, rect
+
+def mostrar_tablero(pantalla:pygame.Surface):
+
+    tamanio_celda = 87
+    alto_celda = 85
+    ancho_celda = 85
+    color_fondo = (255, 255, 255)
+    color_celda = (0, 0, 0)
+    color_fondo_celda = (0, 0, 0)
+    color_resaltado = (255, 255, 0)
+
+
+    for fila in range(9):
+        for columna in range(9):
+            pygame.draw.rect(pantalla, color_fondo_celda, pygame.Rect(columna * tamanio_celda, fila * tamanio_celda, tamanio_celda, tamanio_celda))
+
+    for fila in range(9):
+        for columna in range(9):
+            x = columna * tamanio_celda
+            y = fila * tamanio_celda
+            color_fondo_celda = color_fondo
+            pygame.draw.rect(pantalla, color_fondo_celda, pygame.Rect(x, y, alto_celda, ancho_celda))
+
+    # Maneja eventos
+    for evento in pygame.event.get():
+        if evento.type == pygame.MOUSEBUTTONDOWN:  # Evento de clic del mouse
+            # Calcula la celda en base a la posición del mouse
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            columna = mouse_x // tamanio_celda
+            fila = mouse_y // tamanio_celda
+
+            # Calcula la posición de la celda seleccionada
+            x = columna * tamanio_celda
+            y = fila * tamanio_celda
+
+            # # Resalta la celda clickeada
+            # pygame.draw.rect(pantalla, color_resaltado, pygame.Rect(x, y, tamanio_celda, tamanio_celda))
+
+def mostrar_numeros_dentro_sudoku(pantalla:pygame.Surface, matriz_copia:list) -> None:
+    """
+    Esta función permite mostrar los numeros dentro del sudoku.
+
+    Recibe:
+        pantalla (pygame.Surface): superficie en donde se van a poner esos números.
+        tablero (list): lista de números.
+    """
+    tamanio_celda = 87
+    fuente_numeros = pygame.font.SysFont("Arial", 32) #tamaño fuente
+
+    for i in range(9):
+        for j in range(9):
+            
+            if matriz_copia[i][j] != 0:  # Si la celda no está vacía.
+                x = j * tamanio_celda + tamanio_celda // 2
+                y = i * tamanio_celda + tamanio_celda // 2
+                texto = fuente_numeros.render(str(matriz_copia[i][j]), True, (0, 0, 0))  # Crear texto.
+                rect_celda = pygame.Rect(j * tamanio_celda, i * tamanio_celda, tamanio_celda, tamanio_celda)  # Crear rectángulo de la celda
+                texto_rect = texto.get_rect(center=rect_celda.center)  # Centrar el texto en la celda
+                pantalla.blit(texto, texto_rect)  # Dibujar texto en la superficie.  
+
+    # for i in range(9):
+    #     for j in range(9): 
+    #         y = (str(matriz[i]) * tamanio_celda) + tamanio_celda // 4
+    #         x = (str(matriz[j]) * tamanio_celda) + tamanio_celda // 4 #centra el numero  
+            
+    #         texto = fuente_numeros.render(str, True, (0, 0, 0)) #color numeros
+    #         pantalla.blit(texto, (x,y))

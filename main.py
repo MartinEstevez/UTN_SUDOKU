@@ -1,21 +1,28 @@
 import pygame
 from Biblioteca_funciones import *
 from puntajes import *
+from sudoku_original import *
 
 pygame.init() #inicializo pygame 
 pygame.mixer.init() #inicializo musica
 
 #Pantalllas 
-pantalla = inicializar_caracteristicas_pantalla(1534, 801, "Super Sudoku","Segundo_parcial\icono_ventanita.jpg")
+pantalla = inicializar_caracteristicas_pantalla(1534, 801, "Super Sudoku","icono_ventanita.jpg")
 
 #Rutas
-ruta_imagen_inicio = "Segundo_parcial/pantalla_inicio.png"
-ruta_imagen_seleccion_niveles = "Segundo_parcial/pantalla_eleccion_nivel.png"
+ruta_imagen_inicio = "pantalla_inicio.png"
+ruta_imagen_seleccion_niveles = "pantalla_eleccion_nivel.png"
+ruta_imagen_puntajes = "puntajes.png"
 
 #Musica 
-pygame.mixer.music.load("Segundo_parcial/musica_inicio.mp3") #sonido largo de fondo
+pygame.mixer.music.load("musica_inicio.mp3") #sonido largo de fondo
 pygame.mixer.music.set_volume(0.4)
 pygame.mixer.music.play(loops=-1, start=0.0)
+
+#Timer
+
+contador_inicio = pygame.time.get_ticks()  # Tiempo inicial para el contador
+fuente = pygame.font.SysFont("Arial", 30)  # Fuente para el contador
 
 pantalla_actual = "Inicio"
 corriendo = True
@@ -33,16 +40,21 @@ while corriendo == True:
                 x, y = pygame.mouse.get_pos()
                 accion = obtener_accion(x, y)
                 if accion == "Jugar":
-                        pygame.mixer.music.stop() #poner musica nueva SACAR ESTO
-                        pantalla_actual = "Seleccion niveles"
+                    pygame.mixer.music.stop() #poner musica nueva SACAR ESTO
+                    matriz = inicializar_matriz(9, 9, 0)
+                    resolver_sudoku(matriz)
+                    pantalla_actual = "Seleccion niveles"
                 elif accion == "Puntajes":
-                        pass #muestra puntajes
+                    pantalla_actual = "Puntajes"
+                        
                 elif accion == "Salir": 
-                        corriendo = False
+                    corriendo = False
         pygame.display.flip()
     
+
     elif pantalla_actual == "Seleccion niveles":
         pantalla.fill((255,255,255))
+
         mostrar_pantalla_niveles(pantalla, ruta_imagen_seleccion_niveles)
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -51,125 +63,82 @@ while corriendo == True:
                 x, y = pygame.mouse.get_pos()
                 nivel = obtener_accion_niveles(x, y)
                 if nivel == "Facil":
+                    dificultad = "1"
+                    matriz_copia = ocultar_datos_copia(matriz, " ", dificultad)
                     # pygame.mixer.music.stop()
                     pantalla_actual = "Facil"
                     # pygame.mixer.music.stop()
                     cargar_fondo_y_musica_segun_nivel(pantalla, "Facil")
                 elif nivel == "Medio":
+                    dificultad = "2"
+                    matriz_copia = ocultar_datos_copia(matriz, " ", dificultad)
                     pantalla_actual = "Medio"
                     # pygame.mixer.music.stop()
                     cargar_fondo_y_musica_segun_nivel(pantalla, "Medio")
                 elif nivel == "Dificil":
+                    dificultad = "3"
+                    matriz_copia = ocultar_datos_copia(matriz, " ", dificultad)
                     pantalla_actual = "Dificil"
                     # pygame.mixer.music.stop()
                     cargar_fondo_y_musica_segun_nivel(pantalla, "Dificil")
                     
         pygame.display.flip()
-    
+
     #VUELVA AL MENU
     elif pantalla_actual in ["Facil", "Medio", "Dificil"]:
         pantalla.fill((255,255,255))
         cargar_fondo_y_musica_segun_nivel(pantalla, pantalla_actual)
-        dibujar_boton(pantalla, 950, 570, 400, 150, "Volver", (255,255,255), (188, 211, 242))
-
+        mostrar_boton_menu(pantalla)
+        # dibujar_boton(pantalla, 950, 570, 400, 150, "Volver", (255,255,255), (188, 211, 242))
+        texto, rect = iniciar_contador(contador_inicio, fuente, (1400, 50), (0, 0, 0))
+        pantalla.blit(texto, rect)
+        mostrar_tablero(pantalla)
+        mostrar_numeros_dentro_sudoku(pantalla, matriz_copia)
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 corriendo = False
+
+
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
-                accion = obtener_accion_boton_volver(x, y)
-                if accion == "Volver":
-                    pantalla_actual = "Inicio"
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("Segundo_parcial/musica_inicio.mp3") #sonido largo de fondo
-                    pygame.mixer.music.set_volume(0.4)
-                    pygame.mixer.music.play(loops=-1, start=0.0)
+                pantalla_actual = "Inicio"
+                actualizar_pantalla = True
+            # elif evento.type == pygame.MOUSEBUTTONDOWN:
+            #     x, y = pygame.mouse.get_pos()
+            #     accion = obtener_accion_boton_volver(x, y)
+            #     if accion == "Volver":
+            #         pantalla_actual = "Inicio"
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load("musica_inicio.mp3") #sonido largo de fondo
+                pygame.mixer.music.set_volume(0.4)
+                pygame.mixer.music.play(loops=-1, start=0.0)
 
         pygame.display.flip()
+
+    elif pantalla_actual == "Puntajes":
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                corriendo = False
+
+            mostrar_pantalla_puntajes_jugadores(pantalla, ruta_imagen_puntajes)
+            mostrar_puntajes(pantalla, puntajes)
+
+            mostrar_boton_menu(pantalla)
+
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                x, y = pygame.mouse.get_pos()
+                pantalla_actual = "Inicio"
+                actualizar_pantalla = True
+
+        pygame.display.flip()
+
+
+
+pygame.display.flip()
 
 #             pygame.display.flip() #actualiza pmatlla 
 pygame.mixer.music.stop()
 pygame.quit() #sale de pygame
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

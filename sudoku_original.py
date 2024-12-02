@@ -46,7 +46,7 @@ def ocultar_datos_copia(matriz:list, caracter:any, criterio:str) -> None:
 
     elif criterio.lower() == "dificil" or criterio.lower() == "3":
         porcentaje = 60
-
+    
     else:
         print("Acción inválida")
 
@@ -186,6 +186,10 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
     """
     salir = False
     contador_errores = 0
+    puntos = 0
+    puntos_base = 1000
+    acumulador_errores = contador_errores * 100
+    puntaje_final = puntos_base - acumulador_errores
 
     while True:
         # Mostrar la matriz al usuario
@@ -193,7 +197,8 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
 
         for i in range(len(matriz_copia)):
             for j in range(len(matriz_copia[i])):
-                if matriz_copia[i][j] == "-":
+                # if ord(matriz_copia[i][j]) < 49 or ord(matriz_copia[i][j]) > 57:
+                if matriz_copia[i][j] == caracter:
                     print()
                     mostrar_matriz(matriz_copia)
                     print(f"\nErrores: {contador_errores}")
@@ -211,6 +216,7 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
                         # while numero_ingresar != matriz_original:
                         if numero_ingresar == matriz_original[i][j]:
                             print(f"Número {numero_ingresar} correcto")
+                            puntos += 100
                             matriz_copia[i][j] = numero_ingresar
                         
                         else:
@@ -235,28 +241,29 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
         if salir == True:
             break    
         # Pedir al usuario que ingrese una posición
+
                 
+# print("Inicializando matriz")
+#matriz = inicializar_matriz(9, 9, 0)
 
+# print("Matriz inicializada")
 
-print("Inicializando matriz")
-matriz = inicializar_matriz(9, 9, 0)
-print("Matriz inicializada")
+# print()
+# print()
+# print()
 
-print()
-print()
-print()
+# print("Resolviendo sudoku")
+#resolver_sudoku(matriz)
+#mostrar_matriz(matriz)
+# print("Sudoku resuelto")
 
-print("Resolviendo sudoku")
-resolver_sudoku(matriz)
-mostrar_matriz(matriz)
-print("Sudoku resuelto")
+# print()
+# print()
+# print()
 
-print()
-print()
-print()
-
-dificultad = input("[1] Fácil\n[2] Intermedio\n[3] Difícil\nIngrese la dificultad en la que desea jugar: ")
-matriz_copia = ocultar_datos_copia(matriz, "-", dificultad)
-print()
-
-jugar_sudoku(matriz, matriz_copia, "-")
+#dificultad = "1"
+#dificultad = input("[1] Fácil\n[2] Intermedio\n[3] Difícil\nIngrese la dificultad en la que desea jugar: ")
+#matriz_copia = ocultar_datos_copia(matriz, " ", dificultad)
+# print()
+# print()
+#jugar_sudoku(matriz, matriz_copia, " ")

@@ -28,27 +28,14 @@ def inicializar_matriz(filas:int, columnas:int, valor_inicial:any) -> list:
 
     return matriz
 
-def ocultar_datos_copia(matriz:list, caracter:any, criterio:str) -> None:
+def ocultar_datos_copia(matriz:list, caracter:any, porcentaje:int) -> None:
     """
     """
     # matriz_copia = matriz.copy()
     matriz_copia = copy.deepcopy(matriz)
     cantidad = 81
-    porcentaje = None
     ocultos = None
     posiciones = []
-
-    if criterio.lower() == "facil" or criterio.lower() == "1":
-        porcentaje = 20
-
-    elif criterio.lower() == "intermedio" or criterio.lower() == "2":
-        porcentaje = 40
-
-    elif criterio.lower() == "dificil" or criterio.lower() == "3":
-        porcentaje = 60
-    
-    else:
-        print("Acción inválida")
 
     ocultos = (cantidad * porcentaje) // 100
     
@@ -239,31 +226,4 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
                 break
 
         if salir == True:
-            break    
-        # Pedir al usuario que ingrese una posición
-
-                
-# print("Inicializando matriz")
-#matriz = inicializar_matriz(9, 9, 0)
-
-# print("Matriz inicializada")
-
-# print()
-# print()
-# print()
-
-# print("Resolviendo sudoku")
-#resolver_sudoku(matriz)
-#mostrar_matriz(matriz)
-# print("Sudoku resuelto")
-
-# print()
-# print()
-# print()
-
-#dificultad = "1"
-#dificultad = input("[1] Fácil\n[2] Intermedio\n[3] Difícil\nIngrese la dificultad en la que desea jugar: ")
-#matriz_copia = ocultar_datos_copia(matriz, " ", dificultad)
-# print()
-# print()
-#jugar_sudoku(matriz, matriz_copia, " ")
+            break

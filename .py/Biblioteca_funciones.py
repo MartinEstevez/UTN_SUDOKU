@@ -111,7 +111,6 @@ def mostrar_pantalla_niveles(pantalla:pygame.Surface, ruta_imagen:str) -> None:
     imagen_seleccion_niveles = pygame.image.load(ruta_imagen)
     imagen_seleccion_niveles = pygame.transform.scale(imagen_seleccion_niveles, pantalla.get_size())
     pantalla.blit(imagen_seleccion_niveles, (0, 0))
-    pygame.display.flip()
 
     ancho_del_boton = 400
     alto_del_boton = 150
@@ -122,7 +121,6 @@ def mostrar_pantalla_niveles(pantalla:pygame.Surface, ruta_imagen:str) -> None:
     dibujar_boton(pantalla, posicion_horizontal_boton, posicion_vertical_incial_boton, ancho_del_boton, alto_del_boton, "Facil", (56, 92, 106), (128, 164, 238))
     dibujar_boton(pantalla, posicion_horizontal_boton + ancho_del_boton + espacios_entre_los_botones, posicion_vertical_incial_boton, ancho_del_boton, alto_del_boton, "Medio", (56, 92, 106), (128, 164, 238))
     dibujar_boton(pantalla, posicion_horizontal_boton + 2*(ancho_del_boton + espacios_entre_los_botones), posicion_vertical_incial_boton , ancho_del_boton, alto_del_boton, "Dificil", (56, 92, 106), (128, 164, 238))
-    pygame.display.flip() #TITILEOOO
 
 def obtener_accion_niveles(x:int, y:int) -> str:
     """
@@ -343,8 +341,6 @@ def mostrar_pantalla_puntaje(pantalla:pygame.Surface, ruta_imagen:str) -> None:
     pantalla.blit(texto_dificultad)
     pantalla.blit(texto_puntaje)
 
-    pygame.display.update()
-
 def obtener_accion_boton_volver(coordenada_x:int, coordenada_y:int) -> str:
     """
     Esta función detecta si se hizo click en el botón volver.
@@ -380,70 +376,91 @@ def mostrar_boton_menu(pantalla:pygame.Surface) -> None:
 
     fuente_30 = pygame.font.SysFont("Arial", 40)
     texto_menu = fuente_30.render("MENU", True, "#000000")
-    boton_menu = texto_menu.get_rect(center=(x_menu, y_menu))
-    menu = pygame.Rect.inflate(boton_menu, 10, 10)
-    pygame.draw.rect(pantalla, "#000000", menu, 3)
+    # boton_menu = texto_menu.get_rect(center=(x_menu, y_menu)
+    boton_menu = texto_menu.get_rect()
+    boton_menu.x = x_menu
+    boton_menu.y = y_menu
+    pygame.draw.rect(pantalla, "#000000", boton_menu, 3)
 
     pantalla.blit(texto_menu, boton_menu)
 
-    return menu
+    return boton_menu
 
-def iniciar_contador(contador_inicio:int, fuente:str, posicion:int,color_texto) -> None:
-    """
-    Calcula el tiempo transcurrido desde el inicio del contador y genera el texto del countdown.
-
-        contador_inicio (int): Tiempo de inicio del contador en milisegundos.
-        fuente (pygame.font.Font): Fuente a usar para renderizar el texto.
-        posicion: Posición (x, y)
-        color_texto: Color del texto en formato RGB.
-    """
-    tiempo_transcurrido = (pygame.time.get_ticks() - contador_inicio) / 1000
-    horas = int(tiempo_transcurrido // 3600)
-    minutos = int((tiempo_transcurrido % 3600) // 60)
-    segundos = int(tiempo_transcurrido % 60)
-
-    tiempo_texto = f"{horas:02d}:{minutos:02d}:{segundos:02d}"
-    texto = fuente.render(tiempo_texto, True, color_texto)
-    rect = texto.get_rect(center=posicion)
-
-    return texto, rect
-
-def mostrar_tablero(pantalla:pygame.Surface):
+def mostrar_tablero(pantalla:pygame.Surface, celda_seleccionada:tuple) -> list:
 
     tamanio_celda = 87
     alto_celda = 85
     ancho_celda = 85
     color_fondo = (255, 255, 255)
-    color_celda = (0, 0, 0)
     color_fondo_celda = (0, 0, 0)
-    color_resaltado = (255, 255, 0)
+    linea_gruesa_grosor = 7
+    linea_gruesa_color = (0,0,0)
+    color_celda = (0, 0, 0)
 
+    ancho_rect = 765
+    alto_rect = 800
 
-    for fila in range(9):
-        for columna in range(9):
-            pygame.draw.rect(pantalla, color_fondo_celda, pygame.Rect(columna * tamanio_celda, fila * tamanio_celda, tamanio_celda, tamanio_celda))
+    matriz_celdas = inicializar_matriz(9, 9, None)
+
+    # for fila in range(9):
+    #     for columna in range(9):
+    pygame.draw.rect(pantalla, color_fondo_celda, pygame.Rect(0, 0, ancho_rect, alto_rect))
 
     for fila in range(9):
         for columna in range(9):
             x = columna * tamanio_celda
             y = fila * tamanio_celda
-            color_fondo_celda = color_fondo
-            pygame.draw.rect(pantalla, color_fondo_celda, pygame.Rect(x, y, alto_celda, ancho_celda))
+            if celda_seleccionada and celda_seleccionada == (fila, columna):
+                color_fondo_celda = (255, 255, 0)  # Amarillo para la celda seleccionada
+            else:
+                color_fondo_celda = color_fondo  # Blanco para las celdas no seleccionadas
 
-    # Maneja eventos
-    for evento in pygame.event.get():
-        if evento.type == pygame.MOUSEBUTTONDOWN:  # Evento de clic del mouse
-            # Calcula la celda en base a la posición del mouse
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            columna = mouse_x // tamanio_celda
-            fila = mouse_y // tamanio_celda
+            # Dibujar la celda
+            celda = pygame.draw.rect(pantalla, color_fondo_celda, pygame.Rect(x, y, alto_celda, ancho_celda))
+            matriz_celdas[fila][columna] = celda
+            
+    
+    #lineas divisorias subcuadricula
+    for i in range(10):
+        if i % 3 == 0: #horizontal
+            pygame.draw.line(pantalla, linea_gruesa_color, (0, i * tamanio_celda), (9* tamanio_celda, i* tamanio_celda),linea_gruesa_grosor)
+        else:
+            pygame.draw.line(pantalla, color_celda, (0, i * tamanio_celda), (9* tamanio_celda, i * tamanio_celda), 1)
 
-            # Calcula la posición de la celda seleccionada
-            x = columna * tamanio_celda
-            y = fila * tamanio_celda
+        if i % 3 == 0: #verticales
+            pygame.draw.line(pantalla, linea_gruesa_color, (i * tamanio_celda, 0), (i* tamanio_celda, 9* tamanio_celda),linea_gruesa_grosor)
+        else:
+            pygame.draw.line(pantalla, color_celda, (i * tamanio_celda, 0), (i* tamanio_celda , 9 * tamanio_celda), 1)
 
-            # # Resalta la celda clickeada
-            # pygame.draw.rect(pantalla, color_resaltado, pygame.Rect(x, y, tamanio_celda, tamanio_celda))
+    
+
+
+    return matriz_celdas
+
+def seleccionar_celda(x: int, y: int, matriz_celdas: list) -> tuple:
+    """
+    Detecta la celda seleccionada con base en las coordenadas (x, y) del clic.
+
+    Args:
+        x (int): Coordenada horizontal del clic.
+        y (int): Coordenada vertical del clic.
+        matriz_celdas (list): Matriz de rectángulos representando las celdas del tablero.
+
+    Returns:
+        tuple: Índices (fila, columna) de la celda seleccionada. Retorna None si no se selecciona ninguna celda.
+    """
+
+
+    for fila in range(len(matriz_celdas)):
+        for columna in range(len(matriz_celdas[fila])):
+            if matriz_celdas[fila][columna].collidepoint(x, y):  # Detectar clic dentro del rectángulo
+                celda_seleccionada = (fila, columna)
+    
+    return celda_seleccionada
+
+def resaltar_celda(pantalla:pygame.Surface, fila:int, columna:int, matriz_celdas):
+    celda = matriz_celdas[fila][columna]  # Obtener la celda correspondiente
+    pygame.draw.rect(pantalla, (255, 255, 0), celda)
 
 def mostrar_numeros_dentro_sudoku(pantalla:pygame.Surface, matriz_copia:list) -> None:
     """
@@ -451,26 +468,18 @@ def mostrar_numeros_dentro_sudoku(pantalla:pygame.Surface, matriz_copia:list) ->
 
     Recibe:
         pantalla (pygame.Surface): superficie en donde se van a poner esos números.
-        tablero (list): lista de números.
-    """
+
+            """
     tamanio_celda = 87
     fuente_numeros = pygame.font.SysFont("Arial", 32) #tamaño fuente
 
     for i in range(9):
         for j in range(9):
             
-            if matriz_copia[i][j] != 0:  # Si la celda no está vacía.
+            if matriz_copia[i][j] != 0:  # Si la celda no es 0, debe mostrar un numero.
                 x = j * tamanio_celda + tamanio_celda // 2
                 y = i * tamanio_celda + tamanio_celda // 2
                 texto = fuente_numeros.render(str(matriz_copia[i][j]), True, (0, 0, 0))  # Crear texto.
                 rect_celda = pygame.Rect(j * tamanio_celda, i * tamanio_celda, tamanio_celda, tamanio_celda)  # Crear rectángulo de la celda
                 texto_rect = texto.get_rect(center=rect_celda.center)  # Centrar el texto en la celda
                 pantalla.blit(texto, texto_rect)  # Dibujar texto en la superficie.  
-
-    # for i in range(9):
-    #     for j in range(9): 
-    #         y = (str(matriz[i]) * tamanio_celda) + tamanio_celda // 4
-    #         x = (str(matriz[j]) * tamanio_celda) + tamanio_celda // 4 #centra el numero  
-            
-    #         texto = fuente_numeros.render(str, True, (0, 0, 0)) #color numeros
-    #         pantalla.blit(texto, (x,y))

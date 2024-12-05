@@ -17,7 +17,7 @@ def cargar_puntajes(archivo_json):
     """
     try:
         with open(archivo_json, 'r') as archivo:
-            return json.load(archivo)
+            return json.load(archivo) # QUEDARNOS CON UN SOLO RETURN (POR FUNCION MAX 1 SOLO RETURN)
     except Exception as e:
         print(f"Error al cargar el archivo JSON: {e}")
         return []
@@ -56,6 +56,7 @@ def mostrar_pantalla_puntajes_jugadores(pantalla:pygame.Surface, ruta_imagen:str
     pygame.display.update()
 
 
+# Hay que sacar el enumerate --> reemplazar por algo visto en clase.
 
 
 

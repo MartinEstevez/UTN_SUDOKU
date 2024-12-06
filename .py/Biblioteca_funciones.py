@@ -462,24 +462,63 @@ def resaltar_celda(pantalla:pygame.Surface, fila:int, columna:int, matriz_celdas
     celda = matriz_celdas[fila][columna]  # Obtener la celda correspondiente
     pygame.draw.rect(pantalla, (255, 255, 0), celda)
 
-def mostrar_numeros_dentro_sudoku(pantalla:pygame.Surface, matriz_copia:list) -> None:
+def mostrar_numeros_dentro_sudoku(pantalla: pygame.Surface, matriz_copia: list, matriz:list) -> None:
     """
-    Esta función permite mostrar los numeros dentro del sudoku.
-
-    Recibe:
-        pantalla (pygame.Surface): superficie en donde se van a poner esos números.
-
-            """
+    Renderiza los números en el tablero y los pinta de verde si son válidos,
+    o rojo si son incorrectos.
+    """
     tamanio_celda = 87
-    fuente_numeros = pygame.font.SysFont("Arial", 32) #tamaño fuente
+    fuente_numeros = pygame.font.SysFont("Arial", 32)  # Tamaño de fuente
 
     for i in range(9):
         for j in range(9):
-            
-            if matriz_copia[i][j] != 0:  # Si la celda no es 0, debe mostrar un numero.
+            if matriz_copia[i][j] != 0:  # Si la celda no está vacía
+                numero = matriz_copia[i][j]
+
+                # Determinar el color del número según su validez
+                if numero != matriz[i][j]:
+                    color = (255, 0, 0)  # Verde para válidos
+                else:
+                    color = (0, 0, 0)  # Negro
+
+                # Posicionar el número en el centro de la celda
                 x = j * tamanio_celda + tamanio_celda // 2
                 y = i * tamanio_celda + tamanio_celda // 2
-                texto = fuente_numeros.render(str(matriz_copia[i][j]), True, (0, 0, 0))  # Crear texto.
-                rect_celda = pygame.Rect(j * tamanio_celda, i * tamanio_celda, tamanio_celda, tamanio_celda)  # Crear rectángulo de la celda
-                texto_rect = texto.get_rect(center=rect_celda.center)  # Centrar el texto en la celda
-                pantalla.blit(texto, texto_rect)  # Dibujar texto en la superficie.  
+                texto = fuente_numeros.render(str(numero), True, color)
+                rect_celda = pygame.Rect(j * tamanio_celda, i * tamanio_celda, tamanio_celda, tamanio_celda)
+                texto_rect = texto.get_rect(center=rect_celda.center)
+                pantalla.blit(texto, texto_rect)
+
+
+    # # Validar fila
+    # if numero in matriz[fila]:
+    #     return True
+
+    # # Validar columna
+    # for i in range(9):
+    #     if matriz[i][columna] == numero:
+    #         return True
+
+    # # Validar subcuadrícula 3x3
+    # inicio_fila = (fila // 3) * 3
+    # inicio_columna = (columna // 3) * 3
+    # for i in range(inicio_fila, inicio_fila + 3):
+    #     for j in range(inicio_columna, inicio_columna + 3):
+    #         if matriz[i][j] == numero:
+    #             return False
+
+    # # Si pasa todas las validaciones
+    # return True
+
+# def finalizar_juego(matriz:list, caracter, numero:int) -> bool:
+#     """
+#     """
+#     completado = True
+#     for i in range(len(matriz)):
+#         for j in range(len(matriz[i])):
+#             if (matriz[i][j] == caracter) or numero != matriz[i][j] :
+#                 completado = False
+#                 break
+
+#         if completado == False:
+#             break

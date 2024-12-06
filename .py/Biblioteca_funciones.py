@@ -510,6 +510,20 @@ def mostrar_numeros_dentro_sudoku(pantalla: pygame.Surface, matriz_copia: list, 
     # # Si pasa todas las validaciones
     # return True
 
+def comprobar_juego_correcto(matriz: list) -> bool:
+    """
+    Comprueba si el tablero está completamente resuelto y correcto según las reglas del Sudoku.
+    """
+    for i in range(len(matriz)):
+        for j in range(len(matriz[i])):
+            num = matriz[i][j]
+            if num == 0:  # Verifica que no haya celdas vacías
+                return False
+            if (verificar_numero_fila(matriz, num, i) or
+                verificar_numero_columna(matriz, num, j) or
+                verificar_numero_subcuadricula(matriz, num, i, j)):
+                return False
+    return True
 # def finalizar_juego(matriz:list, caracter, numero:int) -> bool:
 #     """
 #     """
@@ -522,3 +536,12 @@ def mostrar_numeros_dentro_sudoku(pantalla: pygame.Surface, matriz_copia: list, 
 
 #         if completado == False:
 #             break
+
+
+def finalizar_juego():
+    """
+    Imprime un mensaje al finalizar el juego.
+    """
+    print("Juego finalizado")
+
+    pygame.display.flip()

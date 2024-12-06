@@ -30,6 +30,8 @@ celda_seleccionada = None
 texto_ingresado = ""
 activo = True
 
+# 4) En el menú principal o al finalizar la partida, el jugador debe poder ingresar su nombre a través de una caja de texto en la pantalla del juego (NO mediante la terminal).
+
 while corriendo == True:
     
     if pantalla_actual == "Inicio":
@@ -50,6 +52,7 @@ while corriendo == True:
                 accion = obtener_accion(x, y)
 
                 if accion == "Jugar":
+
                     matriz = inicializar_matriz(9, 9, 0)
                     resolver_sudoku(matriz)
                     pantalla_actual = "Seleccion niveles"
@@ -130,6 +133,46 @@ while corriendo == True:
                     if nueva_celda != celda_seleccionada:
                         celda_seleccionada = nueva_celda
                         print(f"Celda seleccionada: {celda_seleccionada}")
+        
+            elif evento.type == pygame.KEYDOWN and celda_seleccionada:
+                i, j = celda_seleccionada  # Desempaquetar la celda seleccionada
+
+                # Solo permitir la modificación si la celda está vacía
+                if matriz_copia[i][j] == 0:  
+                    if pygame.K_1 <= evento.key <= pygame.K_9:  # Teclas del 1 al 9
+                        numero = evento.key - pygame.K_0  # Convertir tecla a número
+
+                        # Actualizar la matriz editable con el número ingresado
+                        matriz_copia[i][j] = numero
+                        print(f"Número ingresado: {numero} en celda ({i}, {j})")
+                        
+                        # Verificar si el Sudoku está completo y bien resuelto
+                        if comprobar_matriz(matriz, matriz_copia):
+                            print("¡Felicidades! El Sudoku está completo y bien resuelto.")
+
+                # Verificar si se presiona la tecla BACKSPACE y si el número es editable (diferente de la matriz original)
+                elif evento.key == pygame.K_BACKSPACE and matriz_copia[i][j] != matriz[i][j]:
+                    matriz_copia[i][j] = 0  # Borrar el número de la celda
+                    print(f"Se borró el número en la celda ({i}, {j})")
+                    
+                else:
+                    print(f"La celda ({i}, {j}) es fija y no se puede modificar.")
+            """
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                x, y = pygame.mouse.get_pos()
+                # Verificar si se presionó el botón de menú
+                if boton_menu.collidepoint((x, y)):
+                    pantalla_actual = "Inicio"
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load("musica_inicio.mp3")  # Cargar música inicial
+                    pygame.mixer.music.set_volume(0.4)
+                    pygame.mixer.music.play(loops=-1, start=0.0)
+                else:
+                    # Seleccionar una celda si se hace clic en el tablero
+                    nueva_celda = seleccionar_celda(x, y, matriz_celdas)
+                    if nueva_celda != celda_seleccionada:
+                        celda_seleccionada = nueva_celda
+                        print(f"Celda seleccionada: {celda_seleccionada}")
 
             elif evento.type == pygame.KEYDOWN and celda_seleccionada:
                 i, j = celda_seleccionada  # Desempaquetar la celda seleccionada
@@ -145,14 +188,37 @@ while corriendo == True:
                         
             
                 # Verificar si se presiona la tecla BACKSPACE y si el número es editable (diferente de la matriz original)
-                elif evento.key == pygame.K_BACKSPACE and matriz_copia[i][j] != 0 and matriz_copia[i][j] != matriz[i][j]:
+                elif evento.key == pygame.K_BACKSPACE and matriz_copia[i][j] != matriz[i][j]:
                     matriz_copia[i][j] = 0  # Borrar el número de la celda
                     print(f"Se borró el número en la celda ({i}, {j})")
                     
                 else:
                     print(f"La celda ({i}, {j}) es fija y no se puede modificar.")
+            """
 
-    # elif pantalla_actual == "Ingreso nombre":
+    #
+    elif pantalla_actual == "Puntajes":
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                corriendo = False
+
+            mostrar_pantalla_puntajes_jugadores(pantalla, ruta_imagen_puntajes)
+            mostrar_puntajes(pantalla, puntajes)
+
+            mostrar_boton_menu(pantalla) # SEPARAR BOTONES SEGUN PANTALLA 
+
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                x, y = pygame.mouse.get_pos()
+                pantalla_actual = "Inicio"
+                actualizar_pantalla = True
+
+    pygame.display.flip()
+
+
+pygame.mixer.music.stop()
+pygame.quit()
+
+# elif pantalla_actual == "Ingreso nombre":
     #     pantalla.fill((255, 255, 255))
         # # dibujar_campo_texto(pantalla, fuente, texto)
         # for evento in pygame.event.get():
@@ -194,24 +260,3 @@ while corriendo == True:
         #         (100, 200), 400, (200, 200, 200), (0, 0, 0)
         #     )
         #     pygame.display.flip()
-
-    elif pantalla_actual == "Puntajes":
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                corriendo = False
-
-            mostrar_pantalla_puntajes_jugadores(pantalla, ruta_imagen_puntajes)
-            mostrar_puntajes(pantalla, puntajes)
-
-            mostrar_boton_menu(pantalla) # SEPARAR BOTONES SEGUN PANTALLA 
-
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                x, y = pygame.mouse.get_pos()
-                pantalla_actual = "Inicio"
-                actualizar_pantalla = True
-
-    pygame.display.flip()
-
-
-pygame.mixer.music.stop()
-pygame.quit()

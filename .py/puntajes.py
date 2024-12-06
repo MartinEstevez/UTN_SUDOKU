@@ -15,12 +15,15 @@ def cargar_puntajes(archivo_json):
     Return:
         list: Una lista de puntajes si el archivo es válido; en caso de no encontrar el archivo, una lista vacía.
     """
-    try:
-        with open(archivo_json, 'r') as archivo:
-            return json.load(archivo) # QUEDARNOS CON UN SOLO RETURN (POR FUNCION MAX 1 SOLO RETURN)
-    except Exception as e:
-        print(f"Error al cargar el archivo JSON: {e}")
-        return []
+    
+    # try:
+    with open(archivo_json, 'r') as archivo:
+        mi_archivo = json.load(archivo) # QUEDARNOS CON UN SOLO RETURN (POR FUNCION MAX 1 SOLO RETURN)
+
+    return mi_archivo
+    # except Exception as e:
+    #     print(f"Error al cargar el archivo JSON: {e}")
+    #     return []
     
 def mostrar_puntajes(pantalla, puntajes):
     """

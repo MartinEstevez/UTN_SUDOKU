@@ -283,7 +283,7 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
                             contador_errores += 1
 
                 else:
-                    if comprobar_matriz(matriz_original, matriz_copia) == True:
+                    if comprobar_matriz(matriz, matriz_copia) == True:
                         salir = True
                         if contador_errores == 1:
                             print(f"¡Ha completado el juego con {contador_errores} error!")
@@ -298,3 +298,16 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
 
         if salir == True:
             break
+
+matriz = inicializar_matriz(9, 9, 0)
+resolver_sudoku(matriz)
+mostrar_matriz(matriz)
+
+print()
+
+matriz_copia = ocultar_datos_copia(matriz, " ", 10)
+mostrar_matriz(matriz_copia)
+
+print()
+
+jugar_sudoku(matriz, matriz_copia, " ")

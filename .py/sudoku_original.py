@@ -3,6 +3,11 @@ import copy
 
 def mostrar_matriz(matriz:list) -> None:
     """
+    Imprime una matriz en formato tabular, separando los elementos con " | " 
+    y las filas con líneas de guiones.
+
+    Recibe:
+        matriz (list): lista de listas que representa la matriz a mostrar.
     """
     guiones = "-" * (len(matriz[0]) + ((len(matriz[0])-1) * 3))
 
@@ -19,6 +24,15 @@ def mostrar_matriz(matriz:list) -> None:
 
 def inicializar_matriz(filas:int, columnas:int, valor_inicial:any) -> list:
     """
+    Crea una matriz de dimensiones especificadas, inicializando cada posición con un valor dado.
+
+    Recibe:
+        filas (int): cantidad de filas de la matriz.
+        columnas (int): cantidad de columnas de la matriz.
+        valor_inicial (any): valor con el que se inicializarán todas las posiciones de la matriz.
+
+    Devuelve:
+        list (list): matriz creada con las dimensiones y valores especificados.
     """
     matriz = []
 
@@ -28,8 +42,18 @@ def inicializar_matriz(filas:int, columnas:int, valor_inicial:any) -> list:
 
     return matriz
 
-def ocultar_datos_copia(matriz:list, caracter:any, porcentaje:int) -> None:
+def ocultar_datos_copia(matriz:list, caracter:any, porcentaje:int) -> list:
     """
+    Crea una copia de una matriz y reemplaza un porcentaje de sus elementos con un caracter especificado,
+    seleccionando las posiciones de manera aleatoria.
+
+    Recibe:
+        matriz (list): lista de listas que representa la matriz original.
+        caracter (any): valor que reemplazará los elementos en las posiciones seleccionadas.
+        porcentaje (int): porcentaje de elementos a reemplazar en la matriz.
+
+    Devuelve:
+        matriz_copia: copia de la matriz original con los elementos reemplazados según el porcentaje.
     """
     # matriz_copia = matriz.copy()
     matriz_copia = copy.deepcopy(matriz)
@@ -55,6 +79,14 @@ def ocultar_datos_copia(matriz:list, caracter:any, porcentaje:int) -> None:
 
 def verificar_numero(lista:list, numero:int) -> bool:
     """
+    Verifica si un número está presente en una lista.
+
+    Recibe:
+        lista (list): lista de elementos donde se buscará el número.
+        numero (int): número a buscar en la lista.
+
+    Devuelve:
+        bandera (bool): True si el número está presente en la lista, False en caso contrario.
     """
     bandera = False
     for i in range(len(lista)):
@@ -64,10 +96,16 @@ def verificar_numero(lista:list, numero:int) -> bool:
 
     return bandera
 
-def resolver_sudoku(matriz: list) -> bool:
+def resolver_sudoku(matriz: list) -> list:
     """
-    Resuelve el Sudoku utilizando el método de backtracking.
-    Devuelve True si se encuentra una solución válida, False en caso contrario.
+    Resuelve un Sudoku utilizando el método de recursividad.
+    Completa las celdas vacías de la matriz (representadas por ceros) con valores válidos.
+
+    Recibe:
+        matriz (list): lista de listas que representa la cuadrícula del Sudoku (9x9), donde las celdas vacías están representadas por ceros.
+
+    Devuelve:
+        solucion_encontrada (list): matriz del Sudoku resuelta con todas las celdas correctamente completadas.
     """
     lista_random = []
     for _ in range(9):
@@ -113,6 +151,15 @@ def resolver_sudoku(matriz: list) -> bool:
     
 def verificar_numero_columna(matriz:list, numero:int, columna:int):
     """
+    Verifica si un número ya está presente en una columna de la matriz.
+
+    Recibe:
+        matriz (list): lista de listas que representa la cuadrícula del Sudoku.
+        numero (int): número que se va a verificar en la columna.
+        columna (int): índice de la columna donde se verificará la presencia del número.
+
+    Devuelve:
+        repetido (bool): True si el número ya está presente en la columna, False en caso contrario.
     """
     repetido = False
     for i in range(len(matriz)):
@@ -135,8 +182,15 @@ def verificar_numero_fila(matriz:list, numero:int, fila:int):
 
 def verificar_numero_subcuadricula(matriz: list, numero: int, fila: int, columna: int) -> bool:
     """
-    Verifica si un número ya está presente en la subcuadrícula 3x3
-    correspondiente a la posición [fila][columna].
+    Verifica si un número ya está presente en una fila de la matriz.
+
+    Recibe:
+        matriz (list): lista de listas que representa la cuadrícula del Sudoku.
+        numero (int): número que se va a verificar en la fila.
+        fila (int): índice de la fila donde se verificará la presencia del número.
+
+    Devuelve:
+        repetido (bool): True si el número ya está presente en la fila, False en caso contrario.
     """
     fila_inicio = (fila // 3) * 3
     columna_inicio = (columna // 3) * 3
@@ -155,6 +209,14 @@ def verificar_numero_subcuadricula(matriz: list, numero: int, fila: int, columna
 
 def comprobar_matriz(matriz:list, caracter) -> bool:
     """
+    Verifica si todos los elementos de la matriz están completos, es decir, si la matriz está resuelta
+
+    Recibe:
+        matriz (list): lista de listas que representa la matriz a comprobar.
+        caracter (any): valor que indica una celda incompleta (por ejemplo, 0 o algún valor vacío).
+
+    Devuelve:
+        completado (bool): True si todos los elementos de la matriz están completos, False si al menos una celda contiene el caracter indicado.
     """
     completado = True
     for i in range(len(matriz)):
@@ -170,13 +232,23 @@ def comprobar_matriz(matriz:list, caracter) -> bool:
 
 def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
     """
+    Simula un juego de Sudoku donde el jugador intenta completar una copia de la matriz original, ingresando números en las celdas vacías. El juego termina cuando se completan todas las celdas correctamente o cuando el jugador decide salir.
+
+    Recibe:
+        matriz_original (list): matriz que representa la solución correcta del Sudoku.
+        matriz_copia (list): matriz que el jugador debe completar, inicialmente contiene celdas vacías.
+        caracter (any): valor que indica las celdas vacías en la matriz (por ejemplo, 0 o algún valor específico).
+
+    El juego permite al jugador:
+        - Ingresar un número en una celda vacía.
+        - Verificar si el número ingresado es correcto.
+        - Mostrar el estado de la matriz después de cada jugada.
+        - Salir del juego si lo desea.
+        - El jugador recibe puntos por respuestas correctas y se penaliza por respuestas incorrectas.
+        - El juego termina cuando la matriz está completa o el jugador decide salir.
     """
     salir = False
     contador_errores = 0
-    puntos = 0
-    puntos_base = 1000
-    acumulador_errores = contador_errores * 100
-    puntaje_final = puntos_base - acumulador_errores
 
     while True:
         # Mostrar la matriz al usuario
@@ -209,7 +281,6 @@ def jugar_sudoku(matriz_original:list, matriz_copia:list, caracter:any) -> None:
                         else:
                             print("ERROR, número incorrecto.")
                             contador_errores += 1
-
 
                 else:
                     if comprobar_matriz(matriz_copia, caracter) == True:

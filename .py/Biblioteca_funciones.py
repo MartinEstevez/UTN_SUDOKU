@@ -489,6 +489,25 @@ def mostrar_numeros_dentro_sudoku(pantalla: pygame.Surface, matriz_copia: list, 
                 texto_rect = texto.get_rect(center=rect_celda.center)
                 pantalla.blit(texto, texto_rect)
 
+def calcular_puntajes(segundos:int, errores:int, aciertos:int) -> int:
+    """
+    """
+    puntaje_base = 1000
+    valor_error = 25
+    valor_segundos = 10
+    valor_aciertos = 50
+    puntaje_total = 0
+
+    valor_error += errores
+    valor_segundos *= segundos
+    valor_aciertos += aciertos
+
+    puntaje_total = valor_aciertos - (valor_error + valor_segundos)
+
+    return puntaje_total
+
+
+
 
     # # Validar fila
     # if numero in matriz[fila]:

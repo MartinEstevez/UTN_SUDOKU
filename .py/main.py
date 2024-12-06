@@ -30,6 +30,8 @@ celda_seleccionada = None
 texto_ingresado = ""
 activo = True
 
+# 4) En el menú principal o al finalizar la partida, el jugador debe poder ingresar su nombre a través de una caja de texto en la pantalla del juego (NO mediante la terminal).
+
 while corriendo == True:
     
     if pantalla_actual == "Inicio":
@@ -50,6 +52,7 @@ while corriendo == True:
                 accion = obtener_accion(x, y)
 
                 if accion == "Jugar":
+                    
                     matriz = inicializar_matriz(9, 9, 0)
                     resolver_sudoku(matriz)
                     pantalla_actual = "Seleccion niveles"
@@ -145,7 +148,7 @@ while corriendo == True:
                         
             
                 # Verificar si se presiona la tecla BACKSPACE y si el número es editable (diferente de la matriz original)
-                elif evento.key == pygame.K_BACKSPACE and matriz_copia[i][j] != 0 and matriz_copia[i][j] != matriz[i][j]:
+                elif evento.key == pygame.K_BACKSPACE and matriz_copia[i][j] != matriz[i][j]:
                     matriz_copia[i][j] = 0  # Borrar el número de la celda
                     print(f"Se borró el número en la celda ({i}, {j})")
                     

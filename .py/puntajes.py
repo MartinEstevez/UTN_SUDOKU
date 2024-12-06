@@ -59,10 +59,6 @@ def mostrar_pantalla_puntajes_jugadores(pantalla:pygame.Surface, ruta_imagen:str
     pygame.display.update()
 
 
-# Hay que sacar el enumerate --> reemplazar por algo visto en clase.
-
-
-
 
 
 

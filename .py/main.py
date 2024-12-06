@@ -157,45 +157,7 @@ while corriendo == True:
                     
                 else:
                     print(f"La celda ({i}, {j}) es fija y no se puede modificar.")
-            """
-            elif evento.type == pygame.MOUSEBUTTONDOWN:
-                x, y = pygame.mouse.get_pos()
-                # Verificar si se presionó el botón de menú
-                if boton_menu.collidepoint((x, y)):
-                    pantalla_actual = "Inicio"
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("musica_inicio.mp3")  # Cargar música inicial
-                    pygame.mixer.music.set_volume(0.4)
-                    pygame.mixer.music.play(loops=-1, start=0.0)
-                else:
-                    # Seleccionar una celda si se hace clic en el tablero
-                    nueva_celda = seleccionar_celda(x, y, matriz_celdas)
-                    if nueva_celda != celda_seleccionada:
-                        celda_seleccionada = nueva_celda
-                        print(f"Celda seleccionada: {celda_seleccionada}")
-
-            elif evento.type == pygame.KEYDOWN and celda_seleccionada:
-                i, j = celda_seleccionada  # Desempaquetar la celda seleccionada
-
-                # Solo permitir la modificación si la celda está vacía
-                if matriz_copia[i][j] == 0:  
-                    if pygame.K_1 <= evento.key <= pygame.K_9:  # Teclas del 1 al 9
-                        numero = evento.key - pygame.K_0  # Convertir tecla a número
-
-                        # Actualizar la matriz editable con el número ingresado
-                        matriz_copia[i][j] = numero
-                        print(f"Número ingresado: {numero} en celda ({i}, {j})")
-                        
             
-                # Verificar si se presiona la tecla BACKSPACE y si el número es editable (diferente de la matriz original)
-                elif evento.key == pygame.K_BACKSPACE and matriz_copia[i][j] != matriz[i][j]:
-                    matriz_copia[i][j] = 0  # Borrar el número de la celda
-                    print(f"Se borró el número en la celda ({i}, {j})")
-                    
-                else:
-                    print(f"La celda ({i}, {j}) es fija y no se puede modificar.")
-            """
-
     #
     elif pantalla_actual == "Puntajes":
         for evento in pygame.event.get():
@@ -217,46 +179,3 @@ while corriendo == True:
 
 pygame.mixer.music.stop()
 pygame.quit()
-
-# elif pantalla_actual == "Ingreso nombre":
-    #     pantalla.fill((255, 255, 255))
-        # # dibujar_campo_texto(pantalla, fuente, texto)
-        # for evento in pygame.event.get():
-        #     if evento.type == pygame.QUIT:
-        #         corriendo = False
-
-        #     elif evento.type == pygame.KEYDOWN:
-        #         if evento.key == pygame.K_RETURN:  # Presionar Enter para confirmar el nombre
-        #             # guardar_puntaje(nombre, puntaje_final)  # Función para guardar puntaje
-        #             pantalla_actual = "Puntajes"
-        #         else:
-                    # nombre += evento.unicode  # Concatenar caracteres del nombre
-
-        # Mostrar el nombre que se está escribiendo
-        # mostrar_nombre(pantalla, nombre)
-    
-        # if finalizar_juego(matriz, 0, numero):
-        #     print("¡Juego terminado! Has completado el Sudoku.")
-        #     jugando = False  # Salir del juego si se completa
-        #     texto_ingresado = ""
-        #     activo = True
-        #     while activo:
-        #         for evento in pygame.event.get():
-        #             if evento.type == pygame.QUIT:
-        #                 corriendo = False
-        #                 activo = False
-        #             elif evento.type == pygame.KEYDOWN:
-        #                 if evento.key == pygame.K_RETURN:  # Confirmar con Enter
-        #                     activo = False
-        #                 elif evento.key == pygame.K_BACKSPACE:
-        #                     texto_ingresado = texto_ingresado[:-1]
-        #                 else:
-        #                     texto_ingresado += evento.unicode
-
-        #     # Dibujar el cuadro de texto
-        #     pantalla.fill((255, 255, 255))  # Fondo blanco para el cuadro
-        #     dibujar_campo_texto(
-        #         pantalla, fuente, texto_ingresado, 
-        #         (100, 200), 400, (200, 200, 200), (0, 0, 0)
-        #     )
-        #     pygame.display.flip()
